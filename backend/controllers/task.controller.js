@@ -106,7 +106,7 @@ const deleteTask = async (req, res) =>{
 
 const toggleTaskStatus = async (req, res) =>{
     try{
-        const task = await Task.findById({
+        const task = await Task.findOne({
             _id: req.params.id,
             user: req.user.id
         });

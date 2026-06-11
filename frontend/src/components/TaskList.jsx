@@ -1,52 +1,96 @@
 import {useState, useEffect} from 'react';
-import axios from 'axios';
+import api from '../api/axios.js';
 import TaskCard from "./TaskCard";
+import DeleteConfirmModal from "./DeleteConfirmModal.jsx";
+import { useToast } from "./ToastProvider.jsx";
 
 function TaskList({ 
     setEditingTask,
     refresh
  }) {
+    const toast = useToast();
     const [tasks, setTasks] = useState([]);
     const [filter, setFilter] = useState("all");
     const [sortBy, setSortBy] = useState("none");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+    const [taskToDelete, setTaskToDelete] = useState(null);
 
     const fetchTasks = async () =>{
+        setLoading(true);
+
         try{
-            const response = await axios.get(
-                "http://localhost:5000/api/tasks"
-            );
+            const response = await api.get("/tasks");
 
             setTasks(response.data);
         }catch(error){
             console.error(error);
+            toast.error(error.response?.data?.message || "Unable to load tasks");
+        }finally{
+            setLoading(false);
         }
     };
 
     const deleteTask = async (id) => {
-        try {
-            await axios.delete(
-                `http://localhost:5000/api/tasks/${id}`
-            );
+        setTaskToDelete(id);
+    };
 
+    const closeDeleteModal = () => {
+        if(deleting){
+            return;
+        }
+
+        setTaskToDelete(null);
+    };
+
+    const confirmDeleteTask = async () => {
+        if(!taskToDelete){
+            return;
+        }
+
+        setDeleting(true);
+
+        try {
+            await api.delete(`/tasks/${taskToDelete}`);
+
+            toast.success("Task deleted successfully");
+            setTaskToDelete(null);
             fetchTasks();
         } catch (error) {
             console.error(error);
+            toast.error(error.response?.data?.message || "Unable to delete task");
+        }finally{
+            setDeleting(false);
         }
     };
 
     const toggleTaskStatus = async (id) => {
         try {
-            await axios.patch(
-                `http://localhost:5000/api/tasks/${id}/toggle`
-            );
+            await api.patch(`/tasks/${id}/toggle`);
 
+            toast.info("Task status updated");
             fetchTasks();
         } catch (error) {
             console.error(error);
+            toast.error(error.response?.data?.message || "Unable to update task");
         }
     };
 
-    const filteredTasks = tasks.filter((task) => {
+    const searchedTasks = tasks.filter((task) => {
+        const query = searchTerm.toLowerCase().trim();
+
+        if(!query){
+            return true;
+        }
+
+        return (
+            task.title.toLowerCase().includes(query) ||
+            (task.description || "").toLowerCase().includes(query)
+        );
+    });
+
+    const filteredTasks = searchedTasks.filter((task) => {
         if(filter === "pending"){
             return !task.completed;
         }
@@ -87,17 +131,39 @@ function TaskList({
     }, [refresh]);
 
     return (
-        <div>
-            <h2>Tasks ({tasks.length})</h2>
+        <div className="task-section">
+            <div className="task-section-header">
+                <h2>Tasks ({tasks.length})</h2>
+            </div>
+
+            <div className="search-box">
+                <label htmlFor="task-search">Search Tasks</label>
+                <input
+                    id="task-search"
+                    type="text"
+                    placeholder="Search by title or description"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
 
             <div className="filter-bar">
-                <button onClick={() => setFilter("all")}>
+                <button
+                    className={filter === "all" ? "active-filter" : ""}
+                    onClick={() => setFilter("all")}
+                >
                     All
                 </button>
-                <button onClick={() => setFilter("pending")}>
+                <button
+                    className={filter === "pending" ? "active-filter" : ""}
+                    onClick={() => setFilter("pending")}
+                >
                     Pending
                 </button>
-                <button onClick={() => setFilter("completed")}>
+                <button
+                    className={filter === "completed" ? "active-filter" : ""}
+                    onClick={() => setFilter("completed")}
+                >
                     Completed
                 </button>
 
@@ -126,13 +192,27 @@ function TaskList({
             </div>
             
             {
-                displayTasks.length === 0 && (
-                    <p>No tasks found.</p>
+                loading && (
+                    <p className="empty-state">Loading tasks...</p>
                 )
             }
 
             {
-                displayTasks.map((task) => (
+                !loading && displayTasks.length === 0 && (
+                    <div className="empty-state">
+                        <p className="empty-state-icon">📝</p>
+                        <h3>No tasks found</h3>
+                        <p>
+                            {tasks.length === 0
+                                ? "Create your first task to get started."
+                                : "Try a different search, filter, or sort option."}
+                        </p>
+                    </div>
+                )
+            }
+
+            {
+                !loading && displayTasks.map((task) => (
                     <TaskCard 
                         key={task._id}
                         task={task}
@@ -142,6 +222,13 @@ function TaskList({
                     />
                 ))
             }
+
+            <DeleteConfirmModal
+                isOpen={Boolean(taskToDelete)}
+                onCancel={closeDeleteModal}
+                onDelete={confirmDeleteTask}
+                deleting={deleting}
+            />
         </div>
     );
 }

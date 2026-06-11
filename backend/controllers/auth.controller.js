@@ -15,7 +15,7 @@ const registerUser = async (req, res) => {
                 message: "User already exists",
             });
         }
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#]).{8,}$/;
         if(!passwordRegex.test(password)){
             return res.status(400).json({
                 message:
@@ -88,6 +88,10 @@ const loginUser = async (req, res) => {
         res.status(200).json({
             message: "Login successful",
             token,
+            user: {
+                name: user.name,
+                email: user.email,
+            },
         });
 
     }catch(error){

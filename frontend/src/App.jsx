@@ -20,7 +20,7 @@ function App() {
 
       <TaskList 
         setEditingTask={setEditingTask}
-        setFresh={setRefresh}
+        refresh={refresh}
       />
     </div>
   );
