@@ -1,28 +1,61 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import axios from "axios";
 
-function AddTaskForm() {
+function AddTaskForm({
+    editingTask,
+    setEditingTask,
+    setRefresh
+}) {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [priority, setPriority] = useState("medium");
     const [dueDate, setDueDate] = useState("");
+
+    useEffect(() => {
+        if(editingTask){
+            setTitle(editingTask.title);
+            setDescription(editingTask.description);
+            setPriority(editingTask.priority);
+            setDueDate(
+                editingTask.dueDate.split("T")[0]
+            );
+        }
+    }, [editingTask]);
     
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try{
-            const response = await axios.post(
-                "http://localhost:5000/api/tasks",
-                {
-                    title,
-                    description,
-                    priority,
-                    dueDate
-                }
-            );
+            if(editingTask){
+                await axios.put(
+                    `http://localhost:5000/api/tasks/${editingTask._id}`,
+                    {
+                        title,
+                        description,
+                        priority,
+                        dueDate
+                    }
+                );
 
-            console.log(response.data);
-            alert("Task Added Successfully");
+                alert("Task Updated Successfully");
+                setEditingTask(null);
+                setRefresh((prev) => !prev);
+            }
+            else{
+                await axios.post(
+                    `http://localhost:5000/api/tasks/`,
+                    {
+                        title,
+                        description,
+                        priority,
+                        dueDate
+                    }
+                );
+
+                alert("Task Added Successfully");
+                setRefresh((prev) => !prev);
+            }
+            
 
             setTitle("");
             setDescription("");
@@ -39,7 +72,10 @@ function AddTaskForm() {
             className="form-container"
             onSubmit={handleSubmit}
         > 
-            <h2>Add Task</h2>
+            <h2>{editingTask
+                ? "Update Task"
+                : "Add Task"}
+            </h2>
 
             <label>Title</label>
             <input
@@ -74,7 +110,9 @@ function AddTaskForm() {
             />
 
             <button type="submit">
-                Add Task
+                {editingTask
+                    ? "Update Task"
+                    : "Add Task"}
             </button>
         </form>
     );

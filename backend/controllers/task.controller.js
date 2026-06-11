@@ -1,4 +1,4 @@
-const Task = require('../models/Task.js');
+const Task = require('../models/Task.model.js');
 
 const createTask = async (req, res) =>{
     try{
@@ -8,7 +8,8 @@ const createTask = async (req, res) =>{
             title,
             description,
             priority,
-            dueDate,    
+            dueDate,  
+            user: req.user.id,  
         });
         res.status(201).json(task);
     }catch(error){
@@ -20,7 +21,9 @@ const createTask = async (req, res) =>{
 
 const getTasks = async (req, res) => {
     try{
-        const tasks = await Task.find();
+        const tasks = await Task.find({
+            user: req.user.id
+        });
         res.status(200).json(tasks);
     }catch(error){
         res.status(500).json({
@@ -31,7 +34,10 @@ const getTasks = async (req, res) => {
 
 const getTaskById = async (req, res) =>{
     try{
-        const task = await Task.findById(req.params.id);
+        const task = await Task.findOne({
+            _id: req.params.id,
+            user: req.user.id
+        });
 
         if(!task){
             return res.status(404).json({
@@ -49,8 +55,11 @@ const getTaskById = async (req, res) =>{
 
 const updateTask = async (req, res) =>{
     try{
-        const task = await Task.findByIdAndUpdate(
-            req.params.id,
+        const task = await Task.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                user: req.user.id
+            },
             req.body,
             {
                 new: true,
@@ -73,9 +82,10 @@ const updateTask = async (req, res) =>{
 
 const deleteTask = async (req, res) =>{
     try{
-        const task = await Task.findByIdAndDelete(
-            req.params.id
-        );
+        const task = await Task.findOneAndDelete({
+            _id: req.params.id,
+            user: req.user.id
+        });
 
         if(!task){
             return res.status(404).json({
@@ -96,7 +106,10 @@ const deleteTask = async (req, res) =>{
 
 const toggleTaskStatus = async (req, res) =>{
     try{
-        const task = await Task.findById(req.params.id);
+        const task = await Task.findById({
+            _id: req.params.id,
+            user: req.user.id
+        });
 
         if(!task) {
             return res.status(404).json({

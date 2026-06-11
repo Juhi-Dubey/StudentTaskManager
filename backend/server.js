@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const connectDB = require('./config/db.js');
 const taskRoutes = require('./routes/task.routes.js');
-
+const authRoutes = require('./routes/auth.routes.js');
 
 dotenv.config();
 connectDB();
@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/tasks', taskRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
     res.send('Server running');

@@ -8,19 +8,21 @@ const { createTask,
     toggleTaskStatus 
 } = require('../controllers/task.controller.js');
 
+const authMiddleware = require('../middleware/auth.middleware.js');
+
 const router = express.Router();
 
-router.post('/', createTask);
+router.post('/', authMiddleware, createTask);
 
-router.get('/', getTasks);
+router.get('/', authMiddleware, getTasks);
 
-router.get('/:id', getTaskById);
+router.get('/:id', authMiddleware, getTaskById);
 
-router.put('/:id', updateTask); 
+router.put('/:id', authMiddleware, updateTask); 
 
-router.delete('/:id', deleteTask);
+router.delete('/:id', authMiddleware, deleteTask);
 
-router.patch('/:id/toggle', toggleTaskStatus);
+router.patch('/:id/toggle', authMiddleware, toggleTaskStatus);
 
 
 module.exports = router;

@@ -2,7 +2,8 @@
 
 function TaskCard({ task,
     deleteTask,
-    toggleTaskStatus
+    toggleTaskStatus,
+    editTask
 }) {
     return (
         <div className="task-card">
@@ -10,8 +11,8 @@ function TaskCard({ task,
 
             <p>{task.description}</p>
 
-            <p>
-                <strong>Priority:</strong> {task.priority}
+            <p className={`priority ${task.priority}`}>
+                Priority: {task.priority}
             </p>
 
             <p>
@@ -29,6 +30,14 @@ function TaskCard({ task,
             </p>
             
             <div className="task-actions">
+                <button
+                    onClick={() => 
+                        editTask(task)
+                    }
+                >
+                    Edit
+                </button>
+
                 <button
                     onClick={() =>
                         toggleTaskStatus(task._id)

@@ -94,8 +94,65 @@ header h1 {
   border-radius: 5px;
 }
 
+.filter-bar {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
 
+.filter-bar button {
+  padding: 8px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
 
+.sort-bar {
+  margin-bottom: 15px;
+}
 
+.sort-bar select {
+  padding: 8px;
+}
 
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 10px;
+  }
 
+  .task-actions {
+    flex-direction: column;
+  }
+
+  .filter-bar {
+    flex-wrap: wrap;
+  }
+}
+
+.priority.high {
+  color: red;
+}
+
+.priority.medium {
+  color: orange;
+}
+
+.priority.low {
+  color: green;
+}
+
+.task-actions button:first-child {
+  background: #3b82f6;
+  color: white;
+}
+
+.task-actions button:nth-child(2) {
+  background: #10b981;
+  color: white;
+}
+
+.task-actions button:nth-child(3) {
+  background: #ef4444;
+  color: white;
+}
