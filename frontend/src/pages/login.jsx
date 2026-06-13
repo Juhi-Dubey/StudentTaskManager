@@ -4,6 +4,8 @@ import api from "../api/axios.js";
 import ThemeToggle from "../components/ThemeToggle.jsx";
 import { useToast } from "../components/ToastProvider.jsx";
 import { setToken, setUser } from "../utils/auth.js";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 
 function Login() {
     const navigate = useNavigate();
@@ -13,6 +15,7 @@ function Login() {
         password: "",
     });
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -65,14 +68,26 @@ function Login() {
                 />
 
                 <label>Password</label>
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
+                <div className="password-container">
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Enter your password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+
+                    <button
+                        type="button"
+                        className="password-toggle"
+                        onClick={() =>
+                            setShowPassword(!showPassword)
+                        }
+                    >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                </div>
 
                 <button
                     type="submit"

@@ -116,24 +116,172 @@ function TaskList({
             low: 1,
         };
 
-        displayTasks.sort(
-            (a, b) =>
-                priorityOrder[b.priority] - priorityOrder[a.priority]
-        );
+        displayTasks.sort((a, b) =>{
+            const priorityDifference = 
+                priorityOrder[b.priority] - priorityOrder[a.priority];
+
+                if(priorityDifference !== 0){
+                    return priorityDifference;
+                }
+
+                return (
+                    new Date(a.dueDate) - new Date(b.dueDate)
+                );
+        });
     }
+
+    displayTasks.sort((a, b) => {
+        if (a.completed === b.completed) return 0;
+
+        return a.completed ? 1 : -1;
+    });
 
     const editTask = (task) => {
         setEditingTask(task);
     }
+
+    const totalTasks = tasks.length;
+    const pendingTasks = tasks.filter(
+        task => !task.completed
+    ).length;
+
+    const completedTasks = tasks.filter(
+        task => task.completed
+    ).length;
+
+    const overdueTasks = tasks.filter(
+        task => !task.completed && new Date(task.dueDate) < new Date()
+    ).length;
+
+    const progress =
+        totalTasks === 0
+            ? 0
+            : Math.round(
+                (completedTasks / totalTasks) * 100
+            );
     
     useEffect(() => {
         fetchTasks();
     }, [refresh]);
 
+    const exportTasks = () => {
+        const csvRows = [
+            [
+                "Title",
+                "Description",
+                "Priority",
+                "Status",
+                "Due Date"
+            ]
+        ];
+
+        tasks.forEach((task) => {
+            csvRows.push([
+                task.title,
+                task.description,
+                task.priority,
+                task.completed
+                    ? "Completed"
+                    : "Pending",
+                new Date(
+                    task.dueDate
+                ).toLocaleDateString()
+            ]);
+        });
+
+        const csvContent = csvRows
+            .map((row) =>
+                row.map((cell) =>
+                    `"${cell}"`
+                ).join(",")
+            )
+            .join("\n");
+
+        const blob = new Blob(
+            [csvContent],
+            {
+                type: "text/csv;charset=utf-8;"
+            }
+        );
+
+        const url =
+            window.URL.createObjectURL(blob);
+
+        const link =
+            document.createElement("a");
+
+        link.href = url;
+
+        link.download =
+            "student_tasks.csv";
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        document.body.removeChild(link);
+
+        window.URL.revokeObjectURL(url);
+
+        toast.success(
+            "Tasks exported successfully"
+        );
+    };
+
     return (
         <div className="task-section">
             <div className="task-section-header">
                 <h2>Tasks ({tasks.length})</h2>
+                <button
+                    className="export-btn"
+                    onClick={exportTasks}
+                >
+                    Export CSV
+                </button>
+            </div>
+
+            <div className="progress-section">
+                <div className="progress-header">
+                    <span>Task Progress</span>
+                    <span>{progress}%</span>
+                </div>
+
+                <div className="progress-bar">
+                    <div
+                        className="progress-fill"
+                        style={{
+                            width: `${progress}%`,
+                            background:
+                                progress < 30
+                                    ? "#ef4444"
+                                    : progress < 70
+                                        ? "#f59e0b"
+                                        : "#22c55e"
+                                                }}
+                    ></div>
+                </div>
+            </div>
+
+            <div className="stats-grid">
+                <div className="stat-card">
+                    <h3>{totalTasks}</h3>
+                    <p>Total</p>
+                </div>
+
+                <div className="stat-card">
+                    <h3>{pendingTasks}</h3>
+                    <p>Pending</p>
+                </div>
+
+                <div className="stat-card">
+                    <h3>{completedTasks}</h3>
+                    <p>Completed</p>
+                </div>
+
+                <div className="stat-card">
+                    <h3>{overdueTasks}</h3>
+                    <p>Overdue</p>
+                </div>
             </div>
 
             <div className="search-box">

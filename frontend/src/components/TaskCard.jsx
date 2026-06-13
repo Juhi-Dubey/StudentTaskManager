@@ -5,17 +5,40 @@ function TaskCard({ task,
     toggleTaskStatus,
     editTask
 }) {
+
+    const isOverDue = !task.completed && new Date(task.dueDate) < new Date();
+
     return (
-        <div className={task.completed ? "task-card completed-task" : "task-card"}>
+        <div
+            className={
+                task.completed
+                    ? "task-card completed-task"
+                    : isOverDue
+                        ? "task-card overdue-task"
+                        : "task-card"
+            }
+        >   
             <div className="task-card-header">
-                <h3 className={task.completed ? "completed-title" : ""}>
-                    {task.title}
-                </h3>
-                <span className={task.completed ? "status completed" : "status pending"}>
-                    {task.completed
-                        ? "Completed"
-                        : "Pending"}
-                </span>
+                <h3>{task.title}</h3>
+
+                <div className="status-group">
+                    <span className={task.completed
+                        ? "status completed"
+                        : isOverDue
+                            ? "status overdue"
+                            : "status pending"}
+                    >
+                        {
+                            task.completed
+                                ? "Completed"
+                                : isOverDue
+                                    ? "Overdue"
+                                    : "Pending"
+                        }
+                    </span>
+
+                    
+                </div>
             </div>
 
             <p>{task.description}</p>

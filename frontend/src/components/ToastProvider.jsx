@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
+
 const ToastContext = createContext(null);
 
 function ToastProvider({ children }) {
@@ -48,9 +49,10 @@ function ToastProvider({ children }) {
 
                         <button
                             type="button"
+                            className="toast-close"
                             onClick={() => removeToast(toast.id)}
                         >
-                            Close
+                            ✕
                         </button>
                     </div>
                 ))}

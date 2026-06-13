@@ -363,7 +363,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
 }
 
 .search-box {
@@ -411,7 +411,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .task-card {
-  padding: 18px;
+  padding: 14px;
   margin-top: 14px;
   border: 1px solid var(--card-border);
   border-radius: 8px;
@@ -460,9 +460,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .status {
   flex: 0 0 auto;
-  padding: 5px 9px;
+  padding: 4px 8px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -762,7 +762,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
   .header-actions {
     width: 100%;
-    flex-direction: column;
+    flex-direction: row;
+  }
+
+  .header-actions button {
+    flex: 1;
   }
 
   .secondary-button,
@@ -798,11 +802,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
   .task-card-header,
   .task-actions {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .task-actions button {
     width: 100%;
+    flex: 1;
   }
 
   .modal-actions {
@@ -819,4 +824,169 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     left: 12px;
     width: auto;
   }
+
+  .task-section-header {
+      flex-direction: column;
+      align-items: stretch;
+  }
+
+  .export-btn {
+      width: 100%;
+  }
+}
+
+.password-container {
+    position: relative;
+     margin-bottom: 16px;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 50px;
+    margin-bottom: 0;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: auto !important;
+    min-width: auto !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    color: var(--text-soft) !important;
+
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.password-toggle:hover {
+    background: transparent !important;
+    color: var(--primary) !important;
+    transform: translateY(-50%);
+}
+
+.status.overdue {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+[data-theme="dark"] .status.overdue {
+    background: rgba(239,68,68,.18);
+    color: #f87171;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  padding: 16px;
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  text-align: center;
+}
+
+.stat-card h3 {
+  color: var(--primary);
+  font-size: 24px;
+}
+
+.stat-card p {
+  margin-top: 6px;
+  color: var(--text-muted);
+}
+
+.task-card {
+    padding: 14px;
+}
+
+.stat-total h3 {
+    color: #3b82f6;
+}
+
+.stat-pending h3 {
+    color: #f59e0b;
+}
+
+.stat-completed h3 {
+    color: #22c55e;
+}
+
+.stat-overdue h3 {
+    color: #ef4444;
+}
+
+.task-card.overdue {
+    border-left: 4px solid #ef4444;
+}
+
+.task-card.overdue {
+    box-shadow: 0 0 0 1px rgba(239,68,68,.25);
+}
+
+.status-group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.overdue-task {
+    border-left: 4px solid #ef4444;
+}
+
+.dark .overdue-task,
+[data-theme="dark"] .overdue-task {
+    border-left: 4px solid #f87171;
+}
+
+.progress-section {
+    margin: 16px 0 24px;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: var(--border-color);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #22c55e;
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+.export-btn {
+    
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+    background: #2563eb;
+    color: white;
+
+    font-weight: 600;
 }

@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios.js";
 import ThemeToggle from "../components/ThemeToggle.jsx";
 import { useToast } from "../components/ToastProvider.jsx";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 
 function Register() {
     const navigate = useNavigate();
@@ -13,6 +15,7 @@ function Register() {
         password: "",
     });
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
         setFormData({
@@ -73,14 +76,26 @@ function Register() {
                 />
 
                 <label>Password</label>
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Enter a strong password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                />
+                <div className="password-container">
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="Enter a strong password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+
+                    <button
+                        type="button"
+                        className="password-toggle"
+                        onClick={() =>
+                            setShowPassword(!showPassword)
+                        }
+                    >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                </div>
 
                 <button
                     type="submit"
