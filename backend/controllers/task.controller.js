@@ -4,6 +4,18 @@ const createTask = async (req, res) =>{
     try{
         const { title, description, priority, dueDate } = req.body;
 
+        if(!dueDate){
+            return res.status(400).json({
+                message: "Due date is required",
+            });
+        }
+
+        if (!title?.trim()) {
+            return res.status(400).json({
+                message: "Title is required",
+            });
+        }
+        
         const task = await Task.create({
             title,
             description,
@@ -11,6 +23,7 @@ const createTask = async (req, res) =>{
             dueDate,  
             user: req.user.id,  
         });
+        
         res.status(201).json(task);
     }catch(error){
         res.status(500).json({

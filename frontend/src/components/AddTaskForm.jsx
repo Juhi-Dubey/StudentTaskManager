@@ -28,6 +28,15 @@ function AddTaskForm({
     
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        if(!dueDate){
+            toast.error("Please select a due date");
+            return;
+        }
+        if (!title.trim()) {
+            toast.error("Title is required");
+            return;
+        }
         setLoading(true);
 
         try{

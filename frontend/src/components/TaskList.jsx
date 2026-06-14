@@ -138,6 +138,11 @@ function TaskList({
 
     const editTask = (task) => {
         setEditingTask(task);
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
     }
 
     const totalTasks = tasks.length;
