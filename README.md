@@ -157,8 +157,8 @@ Create a `.env` file:
 ```env
 
 PORT=5000
-MONGO_URI=mongodb://admin:StudentTaskManager888@ac-9biafcm-shard-00-00.n9htrkt.mongodb.net:27017,ac-9biafcm-shard-00-01.n9htrkt.mongodb.net:27017,ac-9biafcm-shard-00-02.n9htrkt.mongodb.net:27017/studentTaskManager?ssl=true&replicaSet=atlas-zuy9tw-shard-0&authSource=admin&retryWrites=true&w=majority
-JWT_SECRET=StudentTaskManagerSecret2026
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
 
 ```
 
