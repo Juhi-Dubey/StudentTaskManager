@@ -184,21 +184,21 @@ npm run dev
 
 ### Login Page
 
-![Login Page](screenshots/Login.png)
+![Login Page](frontend/screenshots/Login.png)
 
 ### Dashboard
 
-![Dashboard](screenshots/Dashboard.png)
+![Dashboard](frontend/screenshots/Dashboard.png)
 
 ### Light Mode
 
-![Light Mode](screenshots/LightMode.png)
+![Light Mode](frontend/screenshots/LightMode.png)
 
 ### Mobile View
 
-![Mobile View 1](screenshots/PhoneView1.png)
+![Mobile View 1](frontend/screenshots/PhoneView1.png)
 
-![Mobile View 2](screenshots/PhoneView2.png)
+![Mobile View 2](frontend/screenshots/PhoneView2.png)
 
 ---
 
