@@ -1,138 +1,224 @@
 # Student Task Manager
 
-A full-stack MERN task manager for students with JWT authentication, user-specific tasks, filtering, sorting, and responsive task management UI.
+A full-stack MERN application that helps students efficiently manage their daily tasks, deadlines, and productivity. The application provides secure user authentication, task tracking, filtering, sorting, dashboard analytics, dark mode support, and CSV export functionality.
 
-## Features
+## 🚀 Live Demo
 
-- User registration and login
-- JWT-based protected routes
-- User-specific task data
-- Add, edit, delete, complete, and undo tasks
-- Filter tasks by all, pending, or completed
-- Sort tasks by priority or due date
-- Loading, success, and error states
-- Responsive dashboard and auth pages
+Frontend: (https:/student-task-manager-sage-seven.vercel.app/dashboard)
 
-## Tech Stack
+Backend API: (https://student-task-manager-backend-foa1.onrender.com/)
 
-- React with Vite
-- React Router
-- Axios
-- Express.js
-- MongoDB Atlas
-- Mongoose
-- JWT Authentication
+---
 
-## Project Structure
+## 📌 Features
+
+### 🔐 Authentication & Security
+
+* User Registration
+* User Login
+* JWT Authentication
+* Protected Routes
+* Password Hashing using bcrypt
+* Strong Password Validation
+* Email Validation
+* Show/Hide Password Feature
+
+### 📝 Task Management
+
+* Create Tasks
+* Update Tasks
+* Delete Tasks
+* Mark Tasks as Completed
+* Undo Completed Tasks
+* User-Specific Task Storage
+
+### 🔍 Search, Filter & Sort
+
+* Search Tasks by Title
+* Search Tasks by Description
+* Filter Tasks:
+  * All
+  * Pending
+  * Completed
+
+* Sort Tasks:
+  * By Priority
+  * By Due Date
+
+* Priority-Based Ordering
+  * High + Due Soon
+  * High + Due Later
+  * Medium
+  * Low
+
+### 📊 Dashboard Analytics
+
+* Total Tasks Counter
+* Pending Tasks Counter
+* Completed Tasks Counter
+* Overdue Tasks Counter
+* Task Completion Progress Bar
+
+### 🎨 User Experience
+
+* Light Mode
+* Dark Mode
+* Toast Notifications
+* Delete Confirmation Modal
+* Mobile Responsive Design
+* Smooth Edit Task Navigation
+
+### 📁 Export Functionality
+
+* Export Tasks as CSV File
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* React.js
+* React Hooks
+* React Router DOM
+* Axios
+* CSS3
+
+### Backend
+
+* Node.js
+* Express.js
+
+### Database
+
+* MongoDB Atlas
+* Mongoose
+
+### Authentication
+
+* JWT (JSON Web Token)
+* bcryptjs
+
+### Deployment
+
+* Vercel (Frontend)
+* Render (Backend)
+
+---
+
+## 📂 Project Structure
 
 ```text
-StudentTaskManager/
-  backend/
-    config/
-    controllers/
-    middleware/
-    models/
-    routes/
-    server.js
-  frontend/
-    src/
-      api/
-      components/
-      pages/
-      utils/
-      App.jsx
-      main.jsx
-      index.css
+StudentTaskManager
+│
+├── backend
+│   ├── config
+│   ├── controllers
+│   ├── middleware
+│   ├── models
+│   ├── routes
+│   └── server.js
+│
+├── frontend
+│   ├── src
+│   │   ├── api
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── utils
+│   │   ├── App.jsx
+│   |   ├── main.jsx
+│   |   └── index.css
+│   │
+│   └── public
+│
+└── README.md
 ```
 
-## Environment Variables
+---
 
-Create `backend/.env`:
+## ⚙️ Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/Juhi-Dubey/StudentTaskManager.git
+cd StudentTaskManager
+```
+
+### Backend Setup
+
+```bash
+cd backend
+npm install
+```
+
+Create a `.env` file:
 
 ```env
+
 PORT=5000
-MONGO_URI=your_mongodb_atlas_connection_string
-JWT_SECRET=your_jwt_secret
+MONGO_URI=mongodb://admin:StudentTaskManager888@ac-9biafcm-shard-00-00.n9htrkt.mongodb.net:27017,ac-9biafcm-shard-00-01.n9htrkt.mongodb.net:27017,ac-9biafcm-shard-00-02.n9htrkt.mongodb.net:27017/studentTaskManager?ssl=true&replicaSet=atlas-zuy9tw-shard-0&authSource=admin&retryWrites=true&w=majority
+JWT_SECRET=StudentTaskManagerSecret2026
+
 ```
 
-Optional frontend environment file at `frontend/.env`:
-
-```env
-VITE_API_URL=http://localhost:5000/api
-```
-
-If `VITE_API_URL` is not set, the frontend uses `http://localhost:5000/api`.
-
-## Local Setup
-
-Install backend dependencies:
+Run backend:
 
 ```bash
-cd backend
-npm install
+npm run dev
 ```
 
-Install frontend dependencies:
+---
+
+### Frontend Setup
 
 ```bash
 cd frontend
 npm install
-```
-
-Start the backend:
-
-```bash
-cd backend
 npm run dev
 ```
 
-Start the frontend:
+---
 
-```bash
-cd frontend
-npm run dev
-```
+## 📸 Screenshots
 
-Open the Vite URL shown in the terminal, usually `http://localhost:5173`.
+### Login Page
 
-## API Routes
+![Login Page](screenshots/Login.png)
 
-Auth:
+### Dashboard
 
-- `POST /api/auth/register`
-- `POST /api/auth/login`
+![Dashboard](screenshots/Dashboard.png)
 
-Tasks:
+### Light Mode
 
-- `POST /api/tasks`
-- `GET /api/tasks`
-- `GET /api/tasks/:id`
-- `PUT /api/tasks/:id`
-- `DELETE /api/tasks/:id`
-- `PATCH /api/tasks/:id/toggle`
+![Light Mode](screenshots/LightMode.png)
 
-Task routes require this header:
+### Mobile View
 
-```http
-Authorization: Bearer <token>
-```
+![Mobile View 1](screenshots/PhoneView1.png)
 
-## Deployment
+![Mobile View 2](screenshots/PhoneView2.png)
 
-Backend:
+---
 
-- Deploy the `backend` folder to a Node.js host such as Render, Railway, or Fly.io.
-- Add `MONGO_URI`, `JWT_SECRET`, and `PORT` in the host environment settings.
-- Ensure CORS allows the deployed frontend URL if you restrict CORS later.
+## 🔮 Future Improvements
 
-Frontend:
+* Drag & Drop Task Ordering
+* Task Categories
+* Task Labels
+* Email Reminders
+* Recurring Tasks
+* Calendar Integration
 
-- Deploy the `frontend` folder to a static host such as Vercel or Netlify.
-- Set `VITE_API_URL` to the deployed backend API URL, ending with `/api`.
-- Build with `npm run build`.
+---
 
-## Notes
+## 👩‍💻 Author
 
-- JWT tokens are stored in `localStorage`.
-- Dashboard access is protected on the frontend and task data is protected on the backend.
-- MongoDB task queries are scoped to the logged-in user.
+**Juhi Dubey**
+
+BCA Student | MERN Stack Developer
+
+GitHub: https://github.com/Juhi-Dubey/
+
+LinkedIn: https://www.linkedin.com/in/juhi-dubey
